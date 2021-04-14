@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora-minimal:33
+FROM registry.access.redhat.com/ubi8:latest
 
 LABEL   name="mdl" \
         version="1.0.1" \
@@ -10,9 +10,9 @@ LABEL   name="mdl" \
 	     --env HOME=${HOME} --workdir $(pwd) --security-opt label=disable \
              rhjhunt/mdl"
 
-RUN microdnf -y --nodocs update && \
-    microdnf -y --nodocs install ruby ruby-devel && \
-    microdnf clean all  && \
+RUN dnf -y --nodocs update && \
+    dnf -y --nodocs install @ruby:2.7 ruby-devel && \
+    dnf clean all  && \
     rm -rf /var/cache/yum && \
     gem install --no-document mdl
 
@@ -20,4 +20,3 @@ WORKDIR /documents
 VOLUME ["/documents"]
 
 ENTRYPOINT ["/usr/local/bin/mdl"]
-
