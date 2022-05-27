@@ -1,7 +1,7 @@
-FROM registry.access.redhat.com/ubi8-minimal:latest
+FROM registry.access.redhat.com/ubi9-minimal
 
 LABEL   name="mdl" \
-        version="1.0.4" \
+        version="1.0.5" \
         architecture="x86_64" \
         vcs-type="git" \
         summary="Open source Markdown link tool in Ruby" \
@@ -10,13 +10,14 @@ LABEL   name="mdl" \
 	     --env HOME=${HOME} --workdir $(pwd) --security-opt label=disable \
              rhjhunt/mdl"
 
-RUN echo -e "[ruby]\nname=ruby\nstream=3.0\nprofiles=\nstate=enabled\n" > /etc/dnf/modules.d/ruby.module && \
-    microdnf -y --nodocs update && \
-    microdnf -y --nodocs install ruby ruby-devel make gcc redhat-rpm-config && \
-    microdnf clean all  && \
-    rm -rf /var/cache/yum && \
+RUN microdnf -y update --nodocs --setopt install_weak_deps=0 && \
+    microdnf -y install --nodocs --setopt install_weak_deps=0 ruby ruby-devel make gcc redhat-rpm-config && \
+    microdnf clean all --enablerepo="*"  && \
+    rm -rf /var/cache/{dnf,yum} && \
+    rm -rf /var/lib/dnf/history.* && \
     gem install --no-document html_tokenizer && \
-    gem install --no-document mdl
+    gem install --no-document mdl && \
+    rm -rf /var/log/*
 
 WORKDIR /docs
 
