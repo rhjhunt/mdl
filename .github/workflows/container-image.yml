@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Container Image CI
 
 on:
   push:
@@ -14,5 +14,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Containerfile --tag mdl:$(date +%s)
+    - name: Build the Container image
+      run: buildah bud -f Containerfile -t mdl:$(date +%s)
