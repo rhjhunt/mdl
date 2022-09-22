@@ -1,7 +1,7 @@
 FROM registry.access.redhat.com/ubi9-minimal
 
 LABEL   name="mdl" \
-        version="1.0.5" \
+        version="1.0.6" \
         architecture="x86_64" \
         vcs-type="git" \
         summary="Open source Markdown link tool in Ruby" \
